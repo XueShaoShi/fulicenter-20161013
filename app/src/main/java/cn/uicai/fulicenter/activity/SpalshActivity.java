@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cn.uicai.fulicenter.R;
+import cn.uicai.fulicenter.utils.MFGT;
 
 public class SpalshActivity extends AppCompatActivity {
 
@@ -36,8 +37,8 @@ public class SpalshActivity extends AppCompatActivity {
                     }
                 }
                 //跳转到MainActivity上
-                startActivity(new Intent(SpalshActivity.this,MainActivity.class));
-                finish();
+                MFGT.gotoMainActivity(SpalshActivity.this);
+                MFGT.finish(SpalshActivity.this);
             }
         }).start();
 
