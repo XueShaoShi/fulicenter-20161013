@@ -37,6 +37,7 @@ public class SpalshActivity extends AppCompatActivity {
                 }
                 //跳转到MainActivity上
                 startActivity(new Intent(SpalshActivity.this,MainActivity.class));
+                finish();
             }
         }).start();
 
