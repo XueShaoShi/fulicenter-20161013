@@ -1,6 +1,7 @@
 package cn.uicai.fulicenter.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -9,7 +10,7 @@ import cn.uicai.fulicenter.utils.MFGT;
 
 public class SpalshActivity extends AppCompatActivity {
 
-    private final long sleepTime=4000;
+    private final long sleepTime=2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,28 +21,13 @@ public class SpalshActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        new Thread(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //拿到这个Activity 的启动时间
-                long start = System.currentTimeMillis();
-                //create db
-                long costTime=System.currentTimeMillis() - start;//判断用户使用的时间
-                //如果用户使用时间未超过2秒则让他继续等待
-                if (sleepTime - costTime > 0)
-                {
-                    try {
-                        Thread.sleep(sleepTime - costTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //跳转到MainActivity上
                 MFGT.gotoMainActivity(SpalshActivity.this);
-                MFGT.finish(SpalshActivity.this);
+                finish();
             }
-        }).start();
-
+        },sleepTime);
 
     }
 }
