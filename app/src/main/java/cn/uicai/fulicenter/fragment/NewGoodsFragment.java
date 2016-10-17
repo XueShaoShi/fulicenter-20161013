@@ -22,6 +22,8 @@ import cn.uicai.fulicenter.adapter.GoodsAdapter;
 import cn.uicai.fulicenter.bean.NewGoodsBean;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
+import cn.uicai.fulicenter.utils.ConvertUtils;
+import cn.uicai.fulicenter.utils.L;
 
 /**
  * Created by xiaomiao on 2016/10/17.
@@ -39,7 +41,7 @@ public class NewGoodsFragment extends Fragment {
     MainActivity mContext;
     GoodsAdapter mAdapter;
     ArrayList<NewGoodsBean> mList;
-    int pageId;
+    int pageId=1;
 
     @Nullable
     @Override
@@ -58,12 +60,15 @@ public class NewGoodsFragment extends Fragment {
         NetDao.downloadnewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
-
+                if (result != null && result.length > 0) {
+                    ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
+                    mAdapter.initData(list);
+                }
             }
 
             @Override
             public void onError(String error) {
-
+                L.e("error"+error);
             }
         });
     }
