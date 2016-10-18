@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         L.i("Mainactivity onCreate");
         initView();
         initFragment();
-
     }
 
     private void initFragment() {
