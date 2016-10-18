@@ -44,7 +44,7 @@ public class GoodsDetailsBean {
     private String shareUrl;
     private boolean promote;
 
-    private List<PropertiesBean> properties;
+    private PropertiesBean[] properties;
 
     public int getId() {
         return id;
@@ -174,11 +174,11 @@ public class GoodsDetailsBean {
         this.promote = promote;
     }
 
-    public List<PropertiesBean> getProperties() {
+    public PropertiesBean[] getProperties() {
         return properties;
     }
 
-    public void setProperties(List<PropertiesBean> properties) {
+    public void setProperties(PropertiesBean[] properties) {
         this.properties = properties;
     }
 

@@ -28,7 +28,7 @@ public class PropertiesBean {
     private String colorUrl;
 
 
-    private List<AlbumsBean> albums;
+    private AlbumsBean[] albums;
 
     public int getId() {
         return id;
@@ -86,11 +86,11 @@ public class PropertiesBean {
         this.colorUrl = colorUrl;
     }
 
-    public List<AlbumsBean> getAlbums() {
+    public AlbumsBean[] getAlbums() {
         return albums;
     }
 
-    public void setAlbums(List<AlbumsBean> albums) {
+    public void setAlbums(AlbumsBean[] albums) {
         this.albums = albums;
     }
 
