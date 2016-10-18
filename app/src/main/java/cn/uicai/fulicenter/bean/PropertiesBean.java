@@ -1,23 +1,9 @@
 package cn.uicai.fulicenter.bean;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Arrays;
 
-/**
- * Created by xiaomiao on 2016/10/14.
- */
-public class PropertiesBean {
-
-
-    /**
-     * id : 9529
-     * goodsId : 0
-     * colorId : 7
-     * colorName : 白色
-     * colorCode : #ffffff
-     * colorImg :
-     * colorUrl : https://detail.tmall.com/item.htm?spm=a1z10.5-b.w4011-3609973698.66.6PtkVY&id=520971761592&rn=5ddf7aff64dbe1a24da0eaf7409e3389&abbucket=15&skuId=3104519239252
-     * albums : [{"pid":7677,"imgId":28296,"imgUrl":"201509/goods_img/7677_P_1442391216432.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28297,"imgUrl":"201509/goods_img/7677_P_1442391216215.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28298,"imgUrl":"201509/goods_img/7677_P_1442391216692.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28299,"imgUrl":"201509/goods_img/7677_P_1442391216316.png","thumbUrl":"no_picture.gif"}]
-     */
+public class PropertiesBean implements Serializable {
 
     private int id;
     private int goodsId;
@@ -26,8 +12,6 @@ public class PropertiesBean {
     private String colorCode;
     private String colorImg;
     private String colorUrl;
-
-
     private AlbumsBean[] albums;
 
     public int getId() {
@@ -94,9 +78,6 @@ public class PropertiesBean {
         this.albums = albums;
     }
 
-    public PropertiesBean() {
-    }
-
     @Override
     public String toString() {
         return "PropertiesBean{" +
@@ -107,7 +88,7 @@ public class PropertiesBean {
                 ", colorCode='" + colorCode + '\'' +
                 ", colorImg='" + colorImg + '\'' +
                 ", colorUrl='" + colorUrl + '\'' +
-                ", albums=" + albums +
+                ", albums=" + Arrays.toString(albums) +
                 '}';
     }
 }

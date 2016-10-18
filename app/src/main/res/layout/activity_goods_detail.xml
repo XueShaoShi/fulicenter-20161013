@@ -93,7 +93,7 @@
             android:id="@+id/salv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/good_detail_bg_white" >
+            android:background="@color/good_detail_bg_white"/>
             <cn.uicai.fulicenter.view.FlowIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
@@ -105,7 +105,6 @@
                 app:normal_color="#a1d1d1d1"
                 app:r="5dp"
                 app:space="3dp"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
         </RelativeLayout>
         <WebView
             android:id="@+id/wv_good_brief"

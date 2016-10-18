@@ -353,7 +353,6 @@ public class OkHttpUtils<T> {
                 }else {
                     Gson gson = new Gson();
                     T value = gson.fromJson(json, mClazz);
-                    L.e("1111111111111111");
                     Message msg = Message.obtain();
                     msg.what = RESULT_SUCCESS;
                     msg.obj = value;

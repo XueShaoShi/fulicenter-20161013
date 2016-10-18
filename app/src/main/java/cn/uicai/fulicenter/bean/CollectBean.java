@@ -1,94 +1,91 @@
 package cn.uicai.fulicenter.bean;
 
-/**
- * Created by xiaomiao on 2016/10/14.
- */
-public class CollectBean {
-        /**
-         * id : 7672
-         * userName : 7672
-         * goodsId : 7672
-         * goodsName : 趣味煮蛋模具
-         * goodsEnglishName : Kotobuki
-         * goodsThumb : http://121.197.1.20/images/201507/thumb_img/6372_thumb_G_1437108490316.jpg
-         * goodsImg : http://121.197.1.20/images/201507/1437108490034171398.jpg
-         * addTime : 1442419200000
-         */
+import java.io.Serializable;
 
-        private int id;
-        private int userName;
-        private int goodsId;
-        private String goodsName;
-        private String goodsEnglishName;
-        private String goodsThumb;
-        private String goodsImg;
-        private long addTime;
+public class CollectBean implements Serializable {
 
-        public int getId() {
-            return id;
-        }
+    /**
+     * id : 7672
+     * userName : 7672
+     * goodsId : 7672
+     * goodsName : 趣味煮蛋模具
+     * goodsEnglishName : Kotobuki
+     * goodsThumb : http:121.197.1.20/images/201507/thumb_img/6372_thumb_G_1437108490316.jpg
+     * goodsImg : http:121.197.1.20/images/201507/1437108490034171398.jpg
+     * addTime : 1442419200000
+     */
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    private int id;
+    private String userName;
+    private int goodsId;
+    private String goodsName;
+    private String goodsEnglishName;
+    private String goodsThumb;
+    private String goodsImg;
+    private long addTime;
 
-        public int getUserName() {
-            return userName;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public void setUserName(int userName) {
-            this.userName = userName;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public int getGoodsId() {
-            return goodsId;
-        }
+    public String getUserName() {
+        return userName;
+    }
 
-        public void setGoodsId(int goodsId) {
-            this.goodsId = goodsId;
-        }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-        public String getGoodsName() {
-            return goodsName;
-        }
+    public int getGoodsId() {
+        return goodsId;
+    }
 
-        public void setGoodsName(String goodsName) {
-            this.goodsName = goodsName;
-        }
+    public void setGoodsId(int goodsId) {
+        this.goodsId = goodsId;
+    }
 
-        public String getGoodsEnglishName() {
-            return goodsEnglishName;
-        }
+    public String getGoodsName() {
+        return goodsName;
+    }
 
-        public void setGoodsEnglishName(String goodsEnglishName) {
-            this.goodsEnglishName = goodsEnglishName;
-        }
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
 
-        public String getGoodsThumb() {
-            return goodsThumb;
-        }
+    public String getGoodsEnglishName() {
+        return goodsEnglishName;
+    }
 
-        public void setGoodsThumb(String goodsThumb) {
-            this.goodsThumb = goodsThumb;
-        }
+    public void setGoodsEnglishName(String goodsEnglishName) {
+        this.goodsEnglishName = goodsEnglishName;
+    }
 
-        public String getGoodsImg() {
-            return goodsImg;
-        }
+    public String getGoodsThumb() {
+        return goodsThumb;
+    }
 
-        public void setGoodsImg(String goodsImg) {
-            this.goodsImg = goodsImg;
-        }
+    public void setGoodsThumb(String goodsThumb) {
+        this.goodsThumb = goodsThumb;
+    }
 
-        public long getAddTime() {
-            return addTime;
-        }
+    public String getGoodsImg() {
+        return goodsImg;
+    }
 
-        public void setAddTime(long addTime) {
-            this.addTime = addTime;
-        }
+    public void setGoodsImg(String goodsImg) {
+        this.goodsImg = goodsImg;
+    }
 
-    public CollectBean() {
+    public long getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(long addTime) {
+        this.addTime = addTime;
     }
 
     @Override
@@ -105,5 +102,3 @@ public class CollectBean {
                 '}';
     }
 }
-
-
