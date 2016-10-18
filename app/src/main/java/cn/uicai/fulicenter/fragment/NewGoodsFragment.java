@@ -44,6 +44,8 @@ public class NewGoodsFragment extends Fragment {
     ArrayList<NewGoodsBean> mList;
     int pageId=1;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,9 +67,15 @@ public class NewGoodsFragment extends Fragment {
             public void onSuccess(NewGoodsBean[] result) {
                 msrl.setRefreshing(false);//设置刷新为False  不在显示
                 mtvRfresh.setVisibility(getView().GONE);//设置提示为不可见
+                mAdapter.setMore(true);
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     mAdapter.initData(list);
+                    if (list.size() < I.PAGE_SIZE_DEFAULT) {
+                        mAdapter.setMore(false);//如果加载的时候小于10  那也不显示
+                    }
+                } else {
+                    mAdapter.setMore(false);//没有获取到数据
                 }
             }
 
