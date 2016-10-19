@@ -6,8 +6,11 @@ import android.content.Intent;
 
 import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
+import cn.uicai.fulicenter.activity.BaseActivity;
+import cn.uicai.fulicenter.activity.BoutiqueChildActivity;
 import cn.uicai.fulicenter.activity.GoodsDetailActivity;
 import cn.uicai.fulicenter.activity.MainActivity;
+import cn.uicai.fulicenter.bean.BoutiqueBean;
 
 //辅助统一跳转的风格,以及简化跳转的逻辑
 public class MFGT {
@@ -40,7 +43,7 @@ public class MFGT {
     }
 
     /**
-     * 实现从商品跳转到商品详细的一个跳转，并设置动画
+     * 实现从商品跳转到商品详细(二级界面)的一个跳转，并设置动画
      * @param context
      * @param goodsId
      */
@@ -54,5 +57,17 @@ public class MFGT {
     public static void startActivity(Context context, Intent intent) {
         context.startActivity(intent);
         ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+    }
+
+    /**
+     * 实现从精选跳转到精选详情（二级界面）的跳转，并设置动画
+     * @param context
+     * @param bean
+     */
+    public static void gotoBoutiqueChildActivity(Context context, BoutiqueBean bean){
+        Intent intent = new Intent();
+        intent.setClass(context,BoutiqueChildActivity.class);
+        intent.putExtra(I.Boutique.CAT_ID, bean);
+        startActivity(context,intent);
     }
 }

@@ -1,62 +1,81 @@
-package cn.uicai.fulicenter.fragment;
+package cn.uicai.fulicenter.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
-import cn.uicai.fulicenter.activity.MainActivity;
 import cn.uicai.fulicenter.adapter.GoodsAdapter;
+import cn.uicai.fulicenter.bean.BoutiqueBean;
 import cn.uicai.fulicenter.bean.NewGoodsBean;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.CommonUtils;
 import cn.uicai.fulicenter.utils.ConvertUtils;
 import cn.uicai.fulicenter.utils.L;
+import cn.uicai.fulicenter.utils.MFGT;
 import cn.uicai.fulicenter.view.SpaceItemDecoration;
 
-/**
- * Created by xiaomiao on 2016/10/17.
- */
+public class BoutiqueChildActivity extends BaseActivity {
 
-public class NewGoodsFragment extends BaseFragment {
-
+    @BindView(R.id.tv_common_title)
+    TextView tvCommonTitle;
     @BindView(R.id.tv_rfresh)
-    TextView mtvRfresh;
+    TextView tvRfresh;
     @BindView(R.id.rv)
-    RecyclerView mrv;
+    RecyclerView rv;
     @BindView(R.id.srl)
-    SwipeRefreshLayout msrl;
+    SwipeRefreshLayout srl;
 
-    MainActivity mContext;
+    GridLayoutManager glm;
     GoodsAdapter mAdapter;
+    BoutiqueChildActivity mContext;
     ArrayList<NewGoodsBean> mList;
     int pageId=1;
-    GridLayoutManager glm;
+    BoutiqueBean ben;
 
-
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_newgoods, container, false);
-        ButterKnife.bind(this, layout);
-        mContext = (MainActivity) getContext();
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_boutique_child);
+        ButterKnife.bind(this);
+        ben = (BoutiqueBean) getIntent().getSerializableExtra(I.Boutique.CAT_ID);
+        if (ben == null) {
+            finish();
+        }
+        mContext = this;
         mList = new ArrayList<>();
-        mAdapter = new GoodsAdapter(mContext,mList);
-        super.onCreateView(inflater, container, savedInstanceState);
-        return layout;
+        mAdapter = new GoodsAdapter(mContext, mList);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void initView() {
+        srl.setColorSchemeColors(
+                getResources().getColor(R.color.google_blue),
+                getResources().getColor(R.color.google_green),
+                getResources().getColor(R.color.google_red),
+                getResources().getColor(R.color.google_yellow)
+        );
+        glm = new GridLayoutManager(mContext, I.COLUM_NUM);
+        rv.setLayoutManager(glm);
+        rv.setHasFixedSize(true);
+        rv.setAdapter(mAdapter);
+        rv.addItemDecoration(new SpaceItemDecoration(20));
+        tvCommonTitle.setText(ben.getTitle());
+    }
+
+    @Override
+    protected void initData() {
+        downloadnewGoods(I.ACTION_DOWNLOAD);
     }
 
     @Override
@@ -66,7 +85,7 @@ public class NewGoodsFragment extends BaseFragment {
     }
 
     private void setPullUpListener() {
-        mrv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -86,7 +105,7 @@ public class NewGoodsFragment extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int firstPosition = glm.findFirstCompletelyVisibleItemPosition();
-                msrl.setEnabled(firstPosition==0);
+                srl.setEnabled(firstPosition==0);
             }
         });
 
@@ -94,23 +113,23 @@ public class NewGoodsFragment extends BaseFragment {
 
     private void setPullDownListener() {
         //下拉刷新的方法
-        msrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                msrl.setRefreshing(true);//显示下拉刷新的提示
-                mtvRfresh.setVisibility(View.VISIBLE);
+                srl.setRefreshing(true);//显示下拉刷新的提示
+                tvRfresh.setVisibility(View.VISIBLE);
                 pageId=1;
                 downloadnewGoods(I.ACTION_PULL_DOWN);
             }
         });
     }
-        //下载数据
+    //下载数据
     private void downloadnewGoods(final int action) {
-        NetDao.downloadNewGoods(mContext,I.CAT_ID,pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadNewGoods(mContext,ben.getId(),pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
-                msrl.setRefreshing(false);//设置刷新为False  不在显示
-                mtvRfresh.setVisibility(getView().GONE);//设置提示为不可见
+                srl.setRefreshing(false);//设置刷新为False  不在显示
+                tvRfresh.setVisibility(View.GONE);//设置提示为不可见
                 mAdapter.setMore(true);
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
@@ -130,8 +149,8 @@ public class NewGoodsFragment extends BaseFragment {
 
             @Override
             public void onError(String error) {
-                msrl.setRefreshing(false);//设置刷新为False  不在显示
-                mtvRfresh.setVisibility(getView().GONE);//设置提示为不可见
+                srl.setRefreshing(false);//设置刷新为False  不在显示
+                tvRfresh.setVisibility(View.GONE);//设置提示为不可见
                 mAdapter.setMore(false);
                 CommonUtils.showLongToast(error);
                 L.e("error"+error);
@@ -140,25 +159,10 @@ public class NewGoodsFragment extends BaseFragment {
 
     }
 
-    @Override
-    protected void initData() {
-        downloadnewGoods(I.ACTION_DOWNLOAD);
+
+
+    @OnClick(R.id.backClickArea)
+    public void onClick() {
+        MFGT.finish(this);
     }
-
-
-    @Override
-    protected void initView() {
-        msrl.setColorSchemeColors(
-                getResources().getColor(R.color.google_blue),
-                getResources().getColor(R.color.google_green),
-                getResources().getColor(R.color.google_red),
-                getResources().getColor(R.color.google_yellow)
-        );
-        glm = new GridLayoutManager(mContext, I.COLUM_NUM);
-        mrv.setLayoutManager(glm);
-        mrv.setHasFixedSize(true);
-        mrv.setAdapter(mAdapter);
-        mrv.addItemDecoration(new SpaceItemDecoration(20));
-    }
-
 }
