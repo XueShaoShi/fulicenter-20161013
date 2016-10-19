@@ -14,12 +14,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.bean.BoutiqueBean;
 import cn.uicai.fulicenter.utils.ImageLoader;
-import cn.uicai.fulicenter.utils.L;
-import cn.uicai.fulicenter.view.FooterViewHolder;
 
 /**
  * Created by xiaomiao on 2016/10/19.
