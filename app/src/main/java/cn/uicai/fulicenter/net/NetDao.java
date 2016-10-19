@@ -6,6 +6,7 @@ import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.bean.BoutiqueBean;
 import cn.uicai.fulicenter.bean.GoodsDetailsBean;
 import cn.uicai.fulicenter.bean.NewGoodsBean;
+import cn.uicai.fulicenter.utils.L;
 
 /**
  * Created by xiaomiao on 2016/10/17.
@@ -33,7 +34,7 @@ public class NetDao {
     public static void downloadBoutique(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener) {
         OkHttpUtils utils = new OkHttpUtils(context);
         utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
-                .targetClass(BoutiqueBean.class)
+                .targetClass(BoutiqueBean[].class)
                 .execute(listener);
     }
 

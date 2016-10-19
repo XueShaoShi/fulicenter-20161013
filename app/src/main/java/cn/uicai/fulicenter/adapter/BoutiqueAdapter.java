@@ -18,6 +18,7 @@ import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.bean.BoutiqueBean;
 import cn.uicai.fulicenter.utils.ImageLoader;
+import cn.uicai.fulicenter.utils.L;
 import cn.uicai.fulicenter.view.FooterViewHolder;
 
 /**
@@ -30,8 +31,8 @@ public class BoutiqueAdapter extends Adapter {
     boolean isMore;
 
     public BoutiqueAdapter(Context Context, ArrayList<BoutiqueBean> List) {
-        mContext = Context;
-        mList = new ArrayList<>();
+        this.mContext = Context;
+        this.mList = new ArrayList<>();
         mList.addAll(List);
     }
 
@@ -60,7 +61,7 @@ public class BoutiqueAdapter extends Adapter {
             holder = new BoutiqueViewHolder(View.inflate(mContext, R.layout.item_boutique, null));
         }
 
-        return null;
+        return holder;
     }
 
     /**
@@ -72,12 +73,13 @@ public class BoutiqueAdapter extends Adapter {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder instanceof FooterViewHolder) {
+            L.e("2222222222222");
             ((FooterViewHolder) holder).mtvFooter.setText(getFooterString());
 
         }
         if (holder instanceof BoutiqueViewHolder) {
             BoutiqueBean boutiqueBean = mList.get(position);
-            ImageLoader.downloadImg(mContext, ((BoutiqueViewHolder) holder).ivBoutiqueImg, boutiqueBean.getImageurl());
+            ImageLoader.downloadImg(mContext, ((BoutiqueViewHolder) holder).ivBoutiqueImg,boutiqueBean.getImageurl());
             ((BoutiqueViewHolder) holder).tvBoutiqueTitle.setText(boutiqueBean.getTitle());
             ((BoutiqueViewHolder) holder).tvBoutiqueName.setText(boutiqueBean.getName());
             ((BoutiqueViewHolder) holder).tvBoutiqueDescription.setText(boutiqueBean.getDescription());
@@ -92,6 +94,7 @@ public class BoutiqueAdapter extends Adapter {
      */
     @Override
     public int getItemCount() {
+
         return mList != null ? mList.size() + 1 : 1;
     }
 

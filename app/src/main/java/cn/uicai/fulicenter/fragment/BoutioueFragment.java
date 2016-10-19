@@ -20,7 +20,6 @@ import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.activity.MainActivity;
 import cn.uicai.fulicenter.adapter.BoutiqueAdapter;
 import cn.uicai.fulicenter.bean.BoutiqueBean;
-import cn.uicai.fulicenter.bean.NewGoodsBean;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.CommonUtils;
@@ -52,6 +51,8 @@ public class BoutioueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_newgoods, container, false);
         ButterKnife.bind(this, layout);
+        mlist = new ArrayList<>();
+        mContext = (MainActivity) getContext();
         mAdapter = new BoutiqueAdapter(mContext, mlist);
         initView();
         initData();
@@ -69,6 +70,7 @@ public class BoutioueFragment extends Fragment {
                 srl.setRefreshing(false);//设置刷新为False  不在显示
                 tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
                 mAdapter.setMore(true);
+                L.e("resule"+result);
                 if (result != null && result.length > 0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
@@ -107,7 +109,7 @@ public class BoutioueFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
-        rv.addItemDecoration(new SpaceItemDecoration(20));
+        rv.addItemDecoration(new SpaceItemDecoration(12));
     }
 }
 
