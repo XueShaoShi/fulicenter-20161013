@@ -31,7 +31,7 @@ import cn.uicai.fulicenter.view.SpaceItemDecoration;
  * Created by xiaomiao on 2016/10/19.
  */
 
-public class BoutioueFragment extends Fragment {
+public class BoutioueFragment extends BaseFragment {
 
 
     @BindView(R.id.tv_rfresh)
@@ -54,13 +54,12 @@ public class BoutioueFragment extends Fragment {
         mlist = new ArrayList<>();
         mContext = (MainActivity) getContext();
         mAdapter = new BoutiqueAdapter(mContext, mlist);
-        initView();
-        initData();
-        setListener();
+        super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setPullDownListener();//下拉刷新
     }
 
@@ -74,8 +73,8 @@ public class BoutioueFragment extends Fragment {
             }
         });
     }
-
-    private void initData() {
+    @Override
+    protected void initData() {
         downloadBoutique();
     }
 
@@ -101,8 +100,8 @@ public class BoutioueFragment extends Fragment {
             }
         });
     }
-
-    private void initView() {
+    @Override
+    protected void initView() {
         srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),

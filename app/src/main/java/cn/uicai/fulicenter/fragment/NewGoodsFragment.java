@@ -31,7 +31,7 @@ import cn.uicai.fulicenter.view.SpaceItemDecoration;
  * Created by xiaomiao on 2016/10/17.
  */
 
-public class NewGoodsFragment extends Fragment {
+public class NewGoodsFragment extends BaseFragment {
 
     @BindView(R.id.tv_rfresh)
     TextView mtvRfresh;
@@ -56,13 +56,12 @@ public class NewGoodsFragment extends Fragment {
         mContext = (MainActivity) getContext();
         mList = new ArrayList<>();
         mAdapter = new GoodsAdapter(mContext,mList);
-        initView();
-        initData();
-        setListener();
+        super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setPullUpListener();//上拉加载
         setPullDownListener();//下拉刷新
     }
@@ -142,14 +141,14 @@ public class NewGoodsFragment extends Fragment {
 
     }
 
-
-    private void initData() {
+    @Override
+    protected void initData() {
         downloadnewGoods(I.ACTION_DOWNLOAD);
     }
 
 
-
-    private void initView() {
+    @Override
+    protected void initView() {
         msrl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
