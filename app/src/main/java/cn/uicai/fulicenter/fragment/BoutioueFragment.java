@@ -56,34 +56,39 @@ public class BoutioueFragment extends Fragment {
         mAdapter = new BoutiqueAdapter(mContext, mlist);
         initView();
         initData();
+        setListener();
         return layout;
     }
 
-    private void initData() {
-        downloadBoutique(I.ACTION_DOWNLOAD);
+    private void setListener() {
+        setPullDownListener();//下拉刷新
     }
 
-    private void downloadBoutique(final int action) {
+    private void setPullDownListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);//显示下拉刷新的提示
+                tvRfresh.setVisibility(View.VISIBLE);
+                downloadBoutique();
+            }
+        });
+    }
+
+    private void initData() {
+        downloadBoutique();
+    }
+
+    private void downloadBoutique() {
         NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
                 srl.setRefreshing(false);//设置刷新为False  不在显示
                 tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
-                mAdapter.setMore(true);
                 L.e("resule"+result);
                 if (result != null && result.length > 0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
-                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
-                        mAdapter.initData(list);
-                    } else {
-                        mAdapter.addData(list);
-                    }
-
-                    if (list.size() < I.PAGE_SIZE_DEFAULT) {
-                        mAdapter.setMore(false);//显示没有更多数据
-                    }
-                } else {
-                    mAdapter.setMore(false);//显示没有更多数据
+                    mAdapter.initData(list);
                 }
             }
 
@@ -91,7 +96,6 @@ public class BoutioueFragment extends Fragment {
             public void onError(String error) {
                 srl.setRefreshing(false);//设置刷新为False  不在显示
                 tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
-                mAdapter.setMore(false);
                 CommonUtils.showLongToast(error);
                 L.e("error"+error);
             }
@@ -109,7 +113,7 @@ public class BoutioueFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
-        rv.addItemDecoration(new SpaceItemDecoration(12));
+        rv.addItemDecoration(new SpaceItemDecoration(20));
     }
 }
 
