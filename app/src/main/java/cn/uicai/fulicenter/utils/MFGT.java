@@ -8,6 +8,7 @@ import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.activity.BaseActivity;
 import cn.uicai.fulicenter.activity.BoutiqueChildActivity;
+import cn.uicai.fulicenter.activity.CategoryChildActivity;
 import cn.uicai.fulicenter.activity.GoodsDetailActivity;
 import cn.uicai.fulicenter.activity.MainActivity;
 import cn.uicai.fulicenter.bean.BoutiqueBean;
@@ -70,4 +71,17 @@ public class MFGT {
         intent.putExtra(I.Boutique.CAT_ID, bean);
         startActivity(context,intent);
     }
+
+    /**
+     * 实现从分类跳转到分类商品详细(二级界面)的一个跳转，并设置动画
+     * @param context
+     * @param catId
+     */
+    public static void gotoCategoryChildActivity(Context context, int catId){
+        Intent intent = new Intent();
+        intent.setClass(context,CategoryChildActivity.class);
+        intent.putExtra(I.CategoryChild.CAT_ID, catId);
+        startActivity(context,intent);
+    }
+
 }
