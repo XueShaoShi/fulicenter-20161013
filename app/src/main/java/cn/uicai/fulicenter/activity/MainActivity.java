@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.fragment.BoutioueFragment;
+import cn.uicai.fulicenter.fragment.CategoryFragment;
 import cn.uicai.fulicenter.fragment.NewGoodsFragment;
 import cn.uicai.fulicenter.utils.L;
 
@@ -35,6 +36,7 @@ public class MainActivity extends BaseActivity {
     Fragment[] mfragments;
     NewGoodsFragment mNewGoodsFragment;
     BoutioueFragment mBoutioueFragment;
+    CategoryFragment mCategoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +50,17 @@ public class MainActivity extends BaseActivity {
         mfragments = new Fragment[5];
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutioueFragment = new BoutioueFragment();
+        mCategoryFragment = new CategoryFragment();
         mfragments[0] = mNewGoodsFragment;
         mfragments[1] = mBoutioueFragment;
+        mfragments[2] = mCategoryFragment;
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container, mBoutioueFragment)
+                .add(R.id.fragment_container, mCategoryFragment)
                 .hide(mBoutioueFragment)
+                .hide(mCategoryFragment)
                 .show(mNewGoodsFragment)
                 .commit();
     }

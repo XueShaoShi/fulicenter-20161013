@@ -357,6 +357,5 @@ public class ImageLoader {
                 .imageView(imageView)
                 .setDragging(isDragging)
                 .showImage(context);
-        L.e(url);
     }
 }
