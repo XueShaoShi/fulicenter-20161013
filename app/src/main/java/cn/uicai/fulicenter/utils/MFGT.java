@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.activity.BaseActivity;
@@ -12,6 +14,7 @@ import cn.uicai.fulicenter.activity.CategoryChildActivity;
 import cn.uicai.fulicenter.activity.GoodsDetailActivity;
 import cn.uicai.fulicenter.activity.MainActivity;
 import cn.uicai.fulicenter.bean.BoutiqueBean;
+import cn.uicai.fulicenter.bean.CategoryChildBean;
 
 //辅助统一跳转的风格,以及简化跳转的逻辑
 public class MFGT {
@@ -77,10 +80,12 @@ public class MFGT {
      * @param context
      * @param catId
      */
-    public static void gotoCategoryChildActivity(Context context, int catId){
+    public static void gotoCategoryChildActivity(Context context, int catId, String groupName, ArrayList<CategoryChildBean> list){
         Intent intent = new Intent();
         intent.setClass(context,CategoryChildActivity.class);
-        intent.putExtra(I.CategoryChild.CAT_ID, catId);
+            intent.putExtra(I.CategoryChild.CAT_ID, catId);
+            intent.putExtra(I.CategoryGroup.NAME, groupName);
+            intent.putExtra(I.CategoryChild.ID,list);
         startActivity(context,intent);
     }
 
