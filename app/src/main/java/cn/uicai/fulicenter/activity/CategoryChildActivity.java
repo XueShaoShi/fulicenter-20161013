@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,8 +38,16 @@ public class CategoryChildActivity extends BaseActivity {
     GoodsAdapter mAdapter;
     CategoryChildActivity mContext;
     ArrayList<NewGoodsBean> mList;
-    int pageId=1;
+    int pageId = 1;
     int catId;
+    boolean addTimeAsc=false;
+    boolean priceAsc=false;
+    int sortBy = I.SORT_BY_ADDTIME_DESC;
+
+    @BindView(R.id.btn_sort_price)
+    Button btnSortPrice;
+    @BindView(R.id.btn_sort_addtime)
+    Button btnSortAddtime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +56,7 @@ public class CategoryChildActivity extends BaseActivity {
         mContext = this;
         mList = new ArrayList<>();
         mAdapter = new GoodsAdapter(mContext, mList);
-        catId=getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
+        catId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
         if (catId == 0) {
             finish();
         }
@@ -101,7 +110,7 @@ public class CategoryChildActivity extends BaseActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int firstPosition = glm.findFirstCompletelyVisibleItemPosition();
-                srl.setEnabled(firstPosition==0);
+                srl.setEnabled(firstPosition == 0);
             }
         });
 
@@ -114,14 +123,15 @@ public class CategoryChildActivity extends BaseActivity {
             public void onRefresh() {
                 srl.setRefreshing(true);//显示下拉刷新的提示
                 tvRfresh.setVisibility(View.VISIBLE);
-                pageId=1;
+                pageId = 1;
                 downloadCategoryGoods(I.ACTION_PULL_DOWN);
             }
         });
     }
+
     //下载数据
     private void downloadCategoryGoods(final int action) {
-        NetDao.downloadCategoryGoods(mContext,catId,pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadCategoryGoods(mContext, catId, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 srl.setRefreshing(false);//设置刷新为False  不在显示
@@ -149,7 +159,7 @@ public class CategoryChildActivity extends BaseActivity {
                 tvRfresh.setVisibility(View.GONE);//设置提示为不可见
                 mAdapter.setMore(false);
                 CommonUtils.showLongToast(error);
-                L.e("error"+error);
+                L.e("error" + error);
             }
         });
 
@@ -161,4 +171,29 @@ public class CategoryChildActivity extends BaseActivity {
         MFGT.finish(this);
     }
 
+    @OnClick({R.id.btn_sort_price, R.id.btn_sort_addtime})
+    public void onClick(View view) {
+        L.e("sortby....");
+        switch (view.getId()) {
+
+            case R.id.btn_sort_price:
+                if (priceAsc) {
+                    sortBy = I.SORT_BY_PRICE_ASC;
+                } else {
+                    sortBy = I.SORT_BY_PRICE_DESC;
+                }
+                priceAsc = !priceAsc;
+                break;
+            case R.id.btn_sort_addtime:
+                if (addTimeAsc) {
+                    sortBy = I.SORT_BY_ADDTIME_ASC;
+                } else {
+                    sortBy = I.SORT_BY_ADDTIME_DESC;
+                }
+                addTimeAsc = !addTimeAsc;
+                break;
+        }
+        L.e("sortby...sortby="+sortBy);
+        mAdapter.setSoryBy(sortBy);
+    }
 }
