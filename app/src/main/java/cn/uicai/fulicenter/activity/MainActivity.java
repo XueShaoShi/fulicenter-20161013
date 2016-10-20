@@ -105,6 +105,7 @@ public class MainActivity extends BaseActivity {
 
     private void setFragment() {
         if (indx != currentIndx) {
+            L.e("currentindx="+currentIndx);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.hide(mfragments[currentIndx]);
             if (!mfragments[indx].isAdded()) {
