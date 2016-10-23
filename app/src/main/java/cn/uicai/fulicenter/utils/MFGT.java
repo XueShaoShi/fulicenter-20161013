@@ -12,6 +12,7 @@ import cn.uicai.fulicenter.activity.BaseActivity;
 import cn.uicai.fulicenter.activity.BoutiqueChildActivity;
 import cn.uicai.fulicenter.activity.CategoryChildActivity;
 import cn.uicai.fulicenter.activity.GoodsDetailActivity;
+import cn.uicai.fulicenter.activity.LoginActivity;
 import cn.uicai.fulicenter.activity.MainActivity;
 import cn.uicai.fulicenter.bean.BoutiqueBean;
 import cn.uicai.fulicenter.bean.CategoryChildBean;
@@ -87,6 +88,10 @@ public class MFGT {
             intent.putExtra(I.CategoryGroup.NAME, groupName);
             intent.putExtra(I.CategoryChild.ID,list);
         startActivity(context,intent);
+    }
+
+    public static void gotoLogin(Activity context) {
+        startActivity(context, LoginActivity.class);
     }
 
 }

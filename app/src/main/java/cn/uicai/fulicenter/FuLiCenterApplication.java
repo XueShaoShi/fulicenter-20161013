@@ -8,6 +8,15 @@ import android.app.Application;
 
 public class FuLiCenterApplication extends Application {
     private static FuLiCenterApplication instance;
+    private static String username;
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static void setUsername(String username) {
+        FuLiCenterApplication.username = username;
+    }
 
     public FuLiCenterApplication() {
         instance = this;
