@@ -14,7 +14,9 @@
     <string name="illegal_user_name" translatable="false">illegal user name</string>
     <string name="nick_name_connot_be_empty" translatable="false">nick name connot be empty</string>
     <string name="password_connot_be_empty" translatable="false">password connot be empty</string>
-    <string name="confirm_password_connot_be_empty" translatable="false">confirm password connot be empty</string>
+    <string name="confirm_password_connot_be_empty" translatable="false">confirm password connot be
+        empty
+    </string>
     <string name="two_input_password" translatable="false">illegal password</string>
     <string name="registering" translatable="false">registering</string>
     <string name="register_fail" translatable="false">register fail</string>
