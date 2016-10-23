@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">福利社</string>
-    <string name="Version_number_is_wrong">Version number is wrong</string>
-    <string name="now_refresh">now_refresh</string>
-    <string name="no_more">no more</string>
-    <string name="load_more">load more</string>
+    <string name="app_name" translatable="false">FuLiCenter</string>
+    <string name="Version_number_is_wrong" translatable="false">Version number is wrong</string>
+    <string name="now_refresh" translatable="false">now_refresh</string>
+    <string name="no_more" translatable="false">no more</string>
+    <string name="load_more" translatable="false">load more</string>
+    <string name="user_name" translatable="false">User name</string>
+    <string name="nickname" translatable="false">NickName</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="confirmpassword" translatable="false">Confirm Password</string>
+    <string name="register" translatable="false">Register</string>
+    <string name="user_name_connot_be_empty" translatable="false">user name connot be empty</string>
+    <string name="illegal_user_name" translatable="false">illegal user name</string>
+    <string name="nick_name_connot_be_empty" translatable="false">nick name connot be empty</string>
+    <string name="password_connot_be_empty" translatable="false">password connot be empty</string>
+    <string name="confirm_password_connot_be_empty" translatable="false">confirm password connot be empty</string>
+    <string name="two_input_password" translatable="false">illegal password</string>
+    <string name="registering" translatable="false">registering</string>
+    <string name="register_fail" translatable="false">register fail</string>
+    <string name="register_success" translatable="false">register success</string>
+    <string name="register_fail_exists" translatable="false">user name exists</string>
+    <string name="login" translatable="false">Login</string>
 </resources>
