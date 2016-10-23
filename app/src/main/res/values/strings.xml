@@ -14,13 +14,15 @@
     <string name="illegal_user_name">illegal user name</string>
     <string name="nick_name_connot_be_empty">nick name connot be empty</string>
     <string name="password_connot_be_empty">password connot be empty</string>
-    <string name="confirm_password_connot_be_empty">confirm password connot be
-        empty
-    </string>
+    <string name="confirm_password_connot_be_empty">confirm password connot beempty</string>
     <string name="two_input_password">illegal password</string>
     <string name="registering">registering</string>
     <string name="register_fail">register fail</string>
     <string name="register_success">register success</string>
     <string name="register_fail_exists">user name exists</string>
     <string name="login">Login</string>
+    <string name="login_fail">login fa</string>
+    <string name="login_fail_unknow_user">login fail,unknow username</string>
+    <string name="login_fail_error_password">login fall,error password</string>
+    <string name="logining">login ing</string>
 </resources>
