@@ -19,6 +19,7 @@ import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.CommonUtils;
 import cn.uicai.fulicenter.utils.L;
 import cn.uicai.fulicenter.utils.MFGT;
+import cn.uicai.fulicenter.utils.ResultUtils;
 
 public class LoginActivity extends BaseActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -88,9 +89,10 @@ public class LoginActivity extends BaseActivity {
         pd.setMessage(getResources().getString(R.string.logining));
         pd.show();
         L.e(TAG,"username="+username+",password="+password);
-        NetDao.Login(mContext, username, password, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.Login(mContext, username, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
+            public void onSuccess(String s) {
+               Result result=ResultUtils.getResultFromJson(s,User.class);
                 pd.dismiss();
                 L.e(TAG,"result="+result);
                 if (result == null) {
