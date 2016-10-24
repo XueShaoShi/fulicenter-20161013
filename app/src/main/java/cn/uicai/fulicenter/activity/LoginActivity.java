@@ -93,7 +93,6 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(String s) {
                Result result=ResultUtils.getResultFromJson(s,User.class);
-                pd.dismiss();
                 L.e(TAG,"result="+result);
                 if (result == null) {
                     CommonUtils.showShortToast(R.string.login_fail);
@@ -112,6 +111,7 @@ public class LoginActivity extends BaseActivity {
                         }
                     }
                 }
+                pd.dismiss();
             }
 
             @Override
