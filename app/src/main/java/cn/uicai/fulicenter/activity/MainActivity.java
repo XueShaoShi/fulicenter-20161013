@@ -14,6 +14,7 @@ import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.fragment.BoutioueFragment;
 import cn.uicai.fulicenter.fragment.CategoryFragment;
 import cn.uicai.fulicenter.fragment.NewGoodsFragment;
+import cn.uicai.fulicenter.fragment.PresonalCenterFragment;
 import cn.uicai.fulicenter.utils.L;
 import cn.uicai.fulicenter.utils.MFGT;
 
@@ -39,6 +40,7 @@ public class MainActivity extends BaseActivity {
     NewGoodsFragment mNewGoodsFragment;
     BoutioueFragment mBoutioueFragment;
     CategoryFragment mCategoryFragment;
+    PresonalCenterFragment mpresonalCenterFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class MainActivity extends BaseActivity {
         mfragments[0] = mNewGoodsFragment;
         mfragments[1] = mBoutioueFragment;
         mfragments[2] = mCategoryFragment;
+        mfragments[4] = mpresonalCenterFragment;
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
@@ -105,11 +108,10 @@ public class MainActivity extends BaseActivity {
                 indx = 3;
                 break;
             case R.id.layout_personal_center:
-                if (FuLiCenterApplication.getUsername() == null) {
+                if (FuLiCenterApplication.getUser() == null) {
                     MFGT.gotoLogin(this);
                 } else {
                     indx = 4;
-
                 }
                 break;
         }
