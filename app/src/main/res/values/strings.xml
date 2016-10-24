@@ -25,4 +25,5 @@
     <string name="login_fail_unknow_user">login fail,unknow username</string>
     <string name="login_fail_error_password">login fall,error password</string>
     <string name="logining">login ing</string>
+    <string name="user_database_error">user database error</string>
 </resources>

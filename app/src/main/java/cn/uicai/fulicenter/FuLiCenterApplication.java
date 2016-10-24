@@ -2,6 +2,8 @@ package cn.uicai.fulicenter;
 
 import android.app.Application;
 
+import cn.uicai.fulicenter.bean.User;
+
 /**
  * Created by xiaomiao on 2016/10/17.
  */
@@ -9,6 +11,8 @@ import android.app.Application;
 public class FuLiCenterApplication extends Application {
     private static FuLiCenterApplication instance;
     private static String username;
+
+    private static User user;
 
     public static String getUsername() {
         return username;
@@ -27,5 +31,13 @@ public class FuLiCenterApplication extends Application {
             instance = new FuLiCenterApplication();
         }
         return instance;
+    }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        FuLiCenterApplication.user = user;
     }
 }
