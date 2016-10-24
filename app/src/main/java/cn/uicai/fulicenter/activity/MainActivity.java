@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity {
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutioueFragment = new BoutioueFragment();
         mCategoryFragment = new CategoryFragment();
+        mpresonalCenterFragment = new PresonalCenterFragment();
         mfragments[0] = mNewGoodsFragment;
         mfragments[1] = mBoutioueFragment;
         mfragments[2] = mCategoryFragment;
@@ -79,7 +80,6 @@ public class MainActivity extends BaseActivity {
         abs[2] = mlayoutCategory;
         abs[3] = mlayoutCart;
         abs[4] = mlayoutPersonalCenter;
-
     }
 
     @Override
@@ -120,9 +120,9 @@ public class MainActivity extends BaseActivity {
 
     private void setFragment() {
         if (indx != currentIndx) {
-            L.e("currentindx="+currentIndx);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.hide(mfragments[currentIndx]);
+            L.e("indx="+indx);
             if (!mfragments[indx].isAdded()) {
                 ft.add(R.id.fragment_container, mfragments[indx]);
             }
@@ -133,7 +133,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setRadioButtonstate() {
-       for (int i=0;i<abs.length;i++) {
+        L.e("index="+indx);
+        for (int i=0;i<abs.length;i++) {
            if (i == indx) {
                abs[i].setChecked(true);
            } else {
@@ -145,4 +146,6 @@ public class MainActivity extends BaseActivity {
     public void onBackPressed() {
      finish();
     }
+
+
 }
