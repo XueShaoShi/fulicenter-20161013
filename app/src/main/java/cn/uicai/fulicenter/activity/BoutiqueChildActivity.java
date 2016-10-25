@@ -153,7 +153,6 @@ public class BoutiqueChildActivity extends BaseActivity {
                 tvRfresh.setVisibility(View.GONE);//设置提示为不可见
                 mAdapter.setMore(false);
                 CommonUtils.showLongToast(error);
-                L.e("error"+error);
             }
         });
 

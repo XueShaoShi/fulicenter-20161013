@@ -48,7 +48,6 @@ public class GoodsDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_goods_detail);
         ButterKnife.bind(this);
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
-        L.i("details", "gooodsId=" + goodsId);
         if (goodsId == 0) {
             finish();
         }
@@ -66,7 +65,6 @@ public class GoodsDetailActivity extends BaseActivity {
         NetDao.downloadGoodsDetail(mContext, goodsId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
             public void onSuccess(GoodsDetailsBean result) {
-                L.i("details=" + result);
                 if (result != null) {
                     showGoodDetails(result);
                 } else {
@@ -77,7 +75,6 @@ public class GoodsDetailActivity extends BaseActivity {
             @Override
             public void onError(String error) {
                 finish();
-                L.e("details,error" + error);
                 CommonUtils.showShortToast(error);
             }
         });

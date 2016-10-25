@@ -125,7 +125,6 @@ public class RegisterActivity extends BaseActivity {
             public void onError(String error) {
                 pd.dismiss();
                 CommonUtils.showShortToast(error);
-                L.e(TAG,"register error="+error);
             }
         });
     }

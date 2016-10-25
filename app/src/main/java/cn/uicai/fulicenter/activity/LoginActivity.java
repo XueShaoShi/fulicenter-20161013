@@ -130,7 +130,6 @@ public class LoginActivity extends BaseActivity {
             public void onError(String error) {
                 pd.dismiss();
                 CommonUtils.showLongToast(error);
-                L.e(TAG,"error="+error);
             }
         });
     }

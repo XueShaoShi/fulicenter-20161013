@@ -49,7 +49,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        L.i("Mainactivity onCreate");
         super.onCreate(savedInstanceState);
     }
 
@@ -125,7 +124,6 @@ public class MainActivity extends BaseActivity {
         if (indx != currentIndx) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.hide(mfragments[currentIndx]);
-            L.e("indx="+indx);
             if (!mfragments[indx].isAdded()) {
                 ft.add(R.id.fragment_container, mfragments[indx]);
             }
@@ -136,7 +134,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setRadioButtonstate() {
-        L.e("index="+indx);
         for (int i=0;i<abs.length;i++) {
            if (i == indx) {
                abs[i].setChecked(true);
@@ -153,14 +150,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        L.e(TAG, "onResume...");
         setFragment();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        L.e(TAG,"onActivityResult,requestCode="+requestCode);
         if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
             indx = 4;
         }
