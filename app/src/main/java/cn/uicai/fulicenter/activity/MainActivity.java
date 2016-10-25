@@ -150,6 +150,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (indx == 4 && FuLiCenterApplication.getUser() == null) {
+            indx = 0;
+        }
         setFragment();
     }
 
