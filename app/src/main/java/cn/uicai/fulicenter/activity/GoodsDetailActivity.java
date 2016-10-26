@@ -26,8 +26,7 @@ import cn.uicai.fulicenter.view.SlideAutoLoopView;
 public class GoodsDetailActivity extends BaseActivity {
 
 
-    int goodsId;
-    GoodsDetailActivity mContext;
+
     @BindView(R.id.backClickArea)
     LinearLayout backClickArea;
     @BindView(R.id.tv_good_name_english)
@@ -44,10 +43,13 @@ public class GoodsDetailActivity extends BaseActivity {
     FlowIndicator indicator;
     @BindView(R.id.wv_good_brief)
     WebView wvGoodBrief;
-
-    boolean isCollected = false;
     @BindView(R.id.iv_good_collect)
     ImageView mIvGoodCollect;
+
+    boolean isCollected = false;
+    int goodsId;
+    GoodsDetailActivity mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,4 +164,48 @@ public class GoodsDetailActivity extends BaseActivity {
             mIvGoodCollect.setImageResource(R.mipmap.bg_collect_in);
         }
     }
+
+    @OnClick(R.id.iv_good_collect)
+    public void onCollectClick(){
+        User user = FuLiCenterApplication.getUser();
+        if(user==null){
+            MFGT.gotoLogin(mContext);
+        }else{
+            if(isCollected){
+                NetDao.deleteCollect(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if(result!=null && result.isSuccess()){
+                            isCollected = !isCollected;
+                            updateGoodsCollectStatus();
+                            CommonUtils.showLongToast(result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }else{
+                NetDao.addCollect(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if(result!=null && result.isSuccess()){
+                            isCollected = !isCollected;
+                            updateGoodsCollectStatus();
+                            CommonUtils.showLongToast(result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+        }
+    }
+
+
 }
