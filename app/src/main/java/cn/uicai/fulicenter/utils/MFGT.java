@@ -11,6 +11,7 @@ import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.activity.BaseActivity;
 import cn.uicai.fulicenter.activity.BoutiqueChildActivity;
 import cn.uicai.fulicenter.activity.CategoryChildActivity;
+import cn.uicai.fulicenter.activity.CollectsActivity;
 import cn.uicai.fulicenter.activity.GoodsDetailActivity;
 import cn.uicai.fulicenter.activity.LoginActivity;
 import cn.uicai.fulicenter.activity.MainActivity;
@@ -116,5 +117,9 @@ public class MFGT {
 
     public static void gotoupdateNick(Activity context) {
         startActivityForResult(context,new Intent(context,UpdateNickActivity.class),I.REQUEST_CODE_NICK);
+    }
+
+    public static void gotoCollects(Activity context){
+                startActivity(context, CollectsActivity.class);
     }
 }
