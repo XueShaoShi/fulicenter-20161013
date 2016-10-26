@@ -14,6 +14,7 @@ import butterknife.OnClick;
 import cn.uicai.fulicenter.FuLiCenterApplication;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.activity.MainActivity;
+import cn.uicai.fulicenter.bean.MessageBean;
 import cn.uicai.fulicenter.bean.Result;
 import cn.uicai.fulicenter.bean.User;
 import cn.uicai.fulicenter.dao.UserDao;
@@ -38,6 +39,8 @@ public class PresonalCenterFragment extends BaseFragment {
 
     MainActivity mContext;
     User user = null;
+    @BindView(R.id.tv_collect_count)
+    TextView mTvCollectCount;
 
     @Nullable
     @Override
@@ -60,7 +63,7 @@ public class PresonalCenterFragment extends BaseFragment {
         if (user == null) {
             MFGT.gotoLogin(mContext);
         } else {
-            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,mIvUserAvatar);
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, mIvUserAvatar);
             mTvUserName.setText(user.getMuserNick());
         }
 
@@ -76,13 +79,14 @@ public class PresonalCenterFragment extends BaseFragment {
         super.onResume();
         user = FuLiCenterApplication.getUser();
         if (user != null) {
-            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,mIvUserAvatar);
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, mIvUserAvatar);
             mTvUserName.setText(user.getMuserNick());
             syncUserInfo();
+            getCollectsCount();
         }
     }
 
-    @OnClick({R.id.tv_center_settings,R.id.center_user_info})
+    @OnClick({R.id.tv_center_settings, R.id.center_user_info})
     public void gotoSettings() {
         MFGT.gotoSettings(mContext);
     }
@@ -100,7 +104,7 @@ public class PresonalCenterFragment extends BaseFragment {
                         if (b) {
                             FuLiCenterApplication.setUser(u);
                             user = u;
-                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,mIvUserAvatar);
+                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, mIvUserAvatar);
                             mTvUserName.setText(user.getMuserNick());
                         }
                     }
@@ -110,6 +114,25 @@ public class PresonalCenterFragment extends BaseFragment {
             @Override
             public void onError(String error) {
 
+            }
+        });
+    }
+
+    private void getCollectsCount() {
+        NetDao.getCollectsCount(mContext,user.getMuserName(),new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result != null && result.isSuccess()) {
+                    mTvCollectCount.setText(result.getMsg());
+                } else {
+                    mTvCollectCount.setText(String.valueOf(0));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                mTvCollectCount.setText(String.valueOf(0));
+                L.e(TAG,"error="+error);
             }
         });
     }

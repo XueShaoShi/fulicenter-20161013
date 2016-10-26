@@ -102,7 +102,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="180"
+                                android:text="0"
                                 android:textColor="@color/white" />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="28"
+                                android:text="0"
                                 android:textColor="@color/white" />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="58"
+                                android:text="0"
                                 android:textColor="@color/white" />
                             <TextView
                                 android:layout_width="wrap_content"
