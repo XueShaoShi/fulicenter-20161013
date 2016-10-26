@@ -1,22 +1,24 @@
 package cn.uicai.fulicenter.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.uicai.fulicenter.FuLiCenterApplication;
 import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.bean.AlbumsBean;
 import cn.uicai.fulicenter.bean.GoodsDetailsBean;
+import cn.uicai.fulicenter.bean.MessageBean;
+import cn.uicai.fulicenter.bean.User;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.CommonUtils;
-import cn.uicai.fulicenter.utils.L;
 import cn.uicai.fulicenter.utils.MFGT;
 import cn.uicai.fulicenter.view.FlowIndicator;
 import cn.uicai.fulicenter.view.SlideAutoLoopView;
@@ -42,6 +44,10 @@ public class GoodsDetailActivity extends BaseActivity {
     FlowIndicator indicator;
     @BindView(R.id.wv_good_brief)
     WebView wvGoodBrief;
+
+    boolean isCollected = false;
+    @BindView(R.id.iv_good_collect)
+    ImageView mIvGoodCollect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,5 +123,43 @@ public class GoodsDetailActivity extends BaseActivity {
     @OnClick(R.id.backClickArea)
     public void onBackClick() {
         MFGT.finish(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isCollected();
+    }
+
+    private void isCollected() {
+        User user = FuLiCenterApplication.getUser();
+        if (user != null) {
+            NetDao.isColected(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        isCollected = true;
+                    }else{
+                        isCollected = false;
+                    }
+                    updateGoodsCollectStatus();
+                }
+
+                @Override
+                public void onError(String error) {
+                    isCollected = false;
+                    updateGoodsCollectStatus();
+                }
+            });
+        }
+        updateGoodsCollectStatus();
+    }
+
+    private void updateGoodsCollectStatus() {
+        if (isCollected) {
+            mIvGoodCollect.setImageResource(R.mipmap.bg_collect_out);
+        } else {
+            mIvGoodCollect.setImageResource(R.mipmap.bg_collect_in);
+        }
     }
 }
