@@ -14,10 +14,15 @@ import butterknife.OnClick;
 import cn.uicai.fulicenter.FuLiCenterApplication;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.activity.MainActivity;
+import cn.uicai.fulicenter.bean.Result;
 import cn.uicai.fulicenter.bean.User;
+import cn.uicai.fulicenter.dao.UserDao;
+import cn.uicai.fulicenter.net.NetDao;
+import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.ImageLoader;
 import cn.uicai.fulicenter.utils.L;
 import cn.uicai.fulicenter.utils.MFGT;
+import cn.uicai.fulicenter.utils.ResultUtils;
 
 /**
  * Created by xiaomiao on 2016/10/24.
@@ -73,11 +78,39 @@ public class PresonalCenterFragment extends BaseFragment {
         if (user != null) {
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,mIvUserAvatar);
             mTvUserName.setText(user.getMuserNick());
+            syncUserInfo();
         }
     }
 
     @OnClick({R.id.tv_center_settings,R.id.center_user_info})
     public void gotoSettings() {
         MFGT.gotoSettings(mContext);
+    }
+
+    private void syncUserInfo() {
+        NetDao.syncUserInfo(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Result result = ResultUtils.getResultFromJson(s, User.class);
+                if (result != null) {
+                    User u = (User) result.getRetData();
+                    if (!user.equals(u)) {
+                        UserDao dao = new UserDao(mContext);
+                        boolean b = dao.saveUser(u);
+                        if (b) {
+                            FuLiCenterApplication.setUser(u);
+                            user = u;
+                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,mIvUserAvatar);
+                            mTvUserName.setText(user.getMuserNick());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 }
