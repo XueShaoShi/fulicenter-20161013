@@ -2,11 +2,13 @@ package cn.uicai.fulicenter.adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.bean.CartBean;
 import cn.uicai.fulicenter.bean.GoodsDetailsBean;
@@ -29,8 +32,7 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
 
     public CartAdapter(Context Context, ArrayList<CartBean> List) {
         this.mContext = Context;
-        this.mList = new ArrayList<>();
-        mList.addAll(List);
+        mList = List;
     }
 
 
@@ -57,7 +59,7 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
      */
     @Override
     public void onBindViewHolder(CartViewHolder holder, int position) {
-        CartBean cartBean = mList.get(position);
+        final CartBean cartBean = mList.get(position);
         GoodsDetailsBean goods = cartBean.getGoods();
         if (goods != null) {
             ImageLoader.downloadImg(mContext, holder.mIvCartThumb, goods.getGoodsThumb());
@@ -66,7 +68,13 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
         }
         holder.mIvCartCount.setText("(" + cartBean.getCount() + ")");
         holder.mCbCartSelected.setChecked(false);
-
+        holder.mCbCartSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                cartBean.setChecked(b);
+                mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+            }
+        });
     }
 
     /**
@@ -82,10 +90,7 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
 
 
     public void initData(ArrayList<CartBean> list) {
-        if (mList != null) {
-            mList.clear();//清空数据
-        }
-        mList.addAll(list);
+        mList = list;
         notifyDataSetChanged();//刷新
     }
 
