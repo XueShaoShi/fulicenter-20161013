@@ -82,55 +82,6 @@ public class ResultUtils {
         return  null;
     }
 
-    public static <T> Result getListResultFromJson(String jsonStr,Class<T> clazz){
-        Result result = new Result();
-        Log.e("Utils","jsonStr="+jsonStr);
-        try {
-            if(jsonStr==null || jsonStr.isEmpty() || jsonStr.length()<3)return null;
-            JSONObject jsonObject = new JSONObject(jsonStr);
-            if(!jsonObject.isNull("retCode")) {
-                result.setRetCode(jsonObject.getInt("retCode"));
-            }else if(!jsonObject.isNull("msg")){
-                result.setRetCode(jsonObject.getInt("msg"));
-            }
-            if(!jsonObject.isNull("retMsg")) {
-                result.setRetMsg(jsonObject.getBoolean("retMsg"));
-            }else if(!jsonObject.isNull("result")){
-                result.setRetMsg(jsonObject.getBoolean("result"));
-            }
-            if(!jsonObject.isNull("retData")) {
-                JSONArray array = jsonObject.getJSONArray("retData");
-                if (array != null) {
-                    List<T> list = new ArrayList<T>();
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject jsonGroupAvatar = array.getJSONObject(i);
-                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(), clazz);
-                        list.add(ga);
-                    }
-                    result.setRetData(list);
-                    return result;
-                }
-            }else{
-                JSONArray array = new JSONArray(jsonStr);
-                if (array != null) {
-                    List<T> list = new ArrayList<T>();
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject jsonGroupAvatar = array.getJSONObject(i);
-                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(), clazz);
-                        list.add(ga);
-                    }
-                    result.setRetData(list);
-                    return result;
-                }
-            }
-            return result;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return  null;
-    }
-
-
     public static ArrayList<CartBean> getCartFromJson(String jsonStr){
         ArrayList<CartBean> list = null;
         try {
@@ -185,4 +136,53 @@ public class ResultUtils {
         }
         return list;
     }
+
+    public static <T> Result getListResultFromJson(String jsonStr,Class<T> clazz){
+        Result result = new Result();
+        Log.e("Utils","jsonStr="+jsonStr);
+        try {
+            if(jsonStr==null || jsonStr.isEmpty() || jsonStr.length()<3)return null;
+            JSONObject jsonObject = new JSONObject(jsonStr);
+            if(!jsonObject.isNull("retCode")) {
+                result.setRetCode(jsonObject.getInt("retCode"));
+            }else if(!jsonObject.isNull("msg")){
+                result.setRetCode(jsonObject.getInt("msg"));
+            }
+            if(!jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("retMsg"));
+            }else if(!jsonObject.isNull("result")){
+                result.setRetMsg(jsonObject.getBoolean("result"));
+            }
+            if(!jsonObject.isNull("retData")) {
+                JSONArray array = jsonObject.getJSONArray("retData");
+                if (array != null) {
+                    List<T> list = new ArrayList<T>();
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonGroupAvatar = array.getJSONObject(i);
+                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(), clazz);
+                        list.add(ga);
+                    }
+                    result.setRetData(list);
+                    return result;
+                }
+            }else{
+                JSONArray array = new JSONArray(jsonStr);
+                if (array != null) {
+                    List<T> list = new ArrayList<T>();
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonGroupAvatar = array.getJSONObject(i);
+                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(), clazz);
+                        list.add(ga);
+                    }
+                    result.setRetData(list);
+                    return result;
+                }
+            }
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  null;
+    }
+
 }
