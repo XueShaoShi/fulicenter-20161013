@@ -165,11 +165,11 @@ public class NetDao {
                 .execute(listener);
     }
 
-    public static void downloadCart(Context context, String username, OkHttpUtils.OnCompleteListener<CartBean[]> listener) {
-        OkHttpUtils<CartBean[]> utils = new OkHttpUtils<>(context);
+    public static void downloadCart(Context context, String username, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_CARTS)
                 .addParam(I.Cart.USER_NAME,username)
-                .targetClass(CartBean[].class)
+                .targetClass(String.class)
                 .execute(listener);
     }
 }
