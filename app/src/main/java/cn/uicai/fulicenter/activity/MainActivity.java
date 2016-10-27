@@ -1,6 +1,7 @@
 package cn.uicai.fulicenter.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import cn.uicai.fulicenter.FuLiCenterApplication;
 import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.fragment.BoutioueFragment;
+import cn.uicai.fulicenter.fragment.CartFragment;
 import cn.uicai.fulicenter.fragment.CategoryFragment;
 import cn.uicai.fulicenter.fragment.NewGoodsFragment;
 import cn.uicai.fulicenter.fragment.PresonalCenterFragment;
@@ -43,6 +45,7 @@ public class MainActivity extends BaseActivity {
     NewGoodsFragment mNewGoodsFragment;
     BoutioueFragment mBoutioueFragment;
     CategoryFragment mCategoryFragment;
+    CartFragment mCartFragment;
     PresonalCenterFragment mpresonalCenterFragment;
 
     @Override
@@ -57,18 +60,20 @@ public class MainActivity extends BaseActivity {
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutioueFragment = new BoutioueFragment();
         mCategoryFragment = new CategoryFragment();
+        mCartFragment = new CartFragment();
         mpresonalCenterFragment = new PresonalCenterFragment();
         mfragments[0] = mNewGoodsFragment;
         mfragments[1] = mBoutioueFragment;
         mfragments[2] = mCategoryFragment;
+        mfragments[3] = mCartFragment;
         mfragments[4] = mpresonalCenterFragment;
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
-                .add(R.id.fragment_container, mBoutioueFragment)
+             /*   .add(R.id.fragment_container, mBoutioueFragment)
                 .add(R.id.fragment_container, mCategoryFragment)
                 .hide(mBoutioueFragment)
-                .hide(mCategoryFragment)
+                .hide(mCategoryFragment)*/
                 .show(mNewGoodsFragment)
                 .commit();
     }
@@ -107,7 +112,11 @@ public class MainActivity extends BaseActivity {
                 indx = 2;
                 break;
             case R.id.layout_cart:
-                indx = 3;
+                if (FuLiCenterApplication.getUser() == null) {
+                    MFGT.gotoCart(this);
+                } else {
+                    indx = 3;
+                }
                 break;
             case R.id.layout_personal_center:
                 if (FuLiCenterApplication.getUser() == null) {
@@ -159,8 +168,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
-            indx = 4;
+        if (FuLiCenterApplication.getUser() != null) {
+            if (requestCode == I.REQUEST_CODE_LOGIN) {
+                indx = 4;
+            }
+            if (requestCode == I.REQUEST_CODE_CART) {
+                indx = 3 ;
+            }
         }
     }
 }

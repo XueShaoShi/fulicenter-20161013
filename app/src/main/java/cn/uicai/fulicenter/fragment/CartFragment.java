@@ -2,7 +2,6 @@ package cn.uicai.fulicenter.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,11 +14,12 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.uicai.fulicenter.I;
+import cn.uicai.fulicenter.FuLiCenterApplication;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.activity.MainActivity;
-import cn.uicai.fulicenter.adapter.BoutiqueAdapter;
-import cn.uicai.fulicenter.bean.BoutiqueBean;
+import cn.uicai.fulicenter.adapter.CartAdapter;
+import cn.uicai.fulicenter.bean.CartBean;
+import cn.uicai.fulicenter.bean.User;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.CommonUtils;
@@ -31,8 +31,8 @@ import cn.uicai.fulicenter.view.SpaceItemDecoration;
  * Created by xiaomiao on 2016/10/19.
  */
 
-public class BoutioueFragment extends BaseFragment {
-
+public class CartFragment extends BaseFragment {
+    private static final String TAG = CartFragment.class.getCanonicalName();
 
     @BindView(R.id.tv_rfresh)
     TextView tvRfresh;
@@ -43,8 +43,8 @@ public class BoutioueFragment extends BaseFragment {
 
     LinearLayoutManager llm;
     MainActivity mContext;
-    BoutiqueAdapter mAdapter;
-    ArrayList<BoutiqueBean> mlist;
+    CartAdapter mAdapter;
+    ArrayList<CartBean> mlist;
 
     @Nullable
     @Override
@@ -53,7 +53,7 @@ public class BoutioueFragment extends BaseFragment {
         ButterKnife.bind(this, layout);
         mlist = new ArrayList<>();
         mContext = (MainActivity) getContext();
-        mAdapter = new BoutiqueAdapter(mContext, mlist);
+        mAdapter = new CartAdapter(mContext, mlist);
         super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
@@ -69,35 +69,39 @@ public class BoutioueFragment extends BaseFragment {
             public void onRefresh() {
                 srl.setRefreshing(true);//显示下拉刷新的提示
                 tvRfresh.setVisibility(View.VISIBLE);
-                downloadBoutique();
+                downloadCart();
             }
         });
     }
     @Override
     protected void initData() {
-        downloadBoutique();
+        downloadCart();
     }
 
-    private void downloadBoutique() {
-        NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
-            @Override
-            public void onSuccess(BoutiqueBean[] result) {
-                srl.setRefreshing(false);//设置刷新为False  不在显示
-                tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
-                if (result != null && result.length > 0) {
-                    ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
-                    mAdapter.initData(list);
+    private void downloadCart() {
+        User user = FuLiCenterApplication.getUser();
+        if (user != null) {
+            NetDao.downloadCart(mContext,user.getMuserName(),new OkHttpUtils.OnCompleteListener<CartBean[]>() {
+                @Override
+                public void onSuccess(CartBean[] result) {
+                    L.e(TAG,"resule="+result);
+                    srl.setRefreshing(false);//设置刷新为False  不在显示
+                    tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
+                    if (result != null && result.length > 0) {
+                        ArrayList<CartBean> list = ConvertUtils.array2List(result);
+                        mAdapter.initData(list);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(String error) {
-                srl.setRefreshing(false);//设置刷新为False  不在显示
-                tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
-                CommonUtils.showLongToast(error);
-                L.e("error"+error);
-            }
-        });
+                @Override
+                public void onError(String error) {
+                    srl.setRefreshing(false);//设置刷新为False  不在显示
+                    tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
+                    CommonUtils.showLongToast(error);
+                    L.e("error"+error);
+                }
+            });
+        }
     }
     @Override
     protected void initView() {
