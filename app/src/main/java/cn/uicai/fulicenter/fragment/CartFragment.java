@@ -31,6 +31,7 @@ import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.CommonUtils;
 import cn.uicai.fulicenter.utils.L;
+import cn.uicai.fulicenter.utils.MFGT;
 import cn.uicai.fulicenter.utils.ResultUtils;
 import cn.uicai.fulicenter.view.SpaceItemDecoration;
 
@@ -61,6 +62,7 @@ public class CartFragment extends BaseFragment {
     CartAdapter mAdapter;
     ArrayList<CartBean> mlist;
     updateCartReceiver mReceiver;
+    String cartIds="";
 
     public CartFragment() {
     }
@@ -82,7 +84,7 @@ public class CartFragment extends BaseFragment {
         setPullDownListener();//下拉刷新
         IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
         mReceiver = new updateCartReceiver();
-        mContext.registerReceiver(mReceiver,filter);
+        mContext.registerReceiver(mReceiver, filter);
     }
 
     private void setPullDownListener() {
@@ -151,49 +153,51 @@ public class CartFragment extends BaseFragment {
     }
 
     private void setCartLayout(boolean hasCart) {
-        mLayoutCart.setVisibility(hasCart?View.VISIBLE:View.GONE);
-        mTvNothing.setVisibility(hasCart?View.GONE:View.VISIBLE);
-        rv.setVisibility(hasCart?View.VISIBLE:View.GONE);
+        mLayoutCart.setVisibility(hasCart ? View.VISIBLE : View.GONE);
+        mTvNothing.setVisibility(hasCart ? View.GONE : View.VISIBLE);
+        rv.setVisibility(hasCart ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.tv_cart_buy)
-    public void onClick() {
+    public void buy() {
+        if (cartIds != null && !cartIds.equals("") && cartIds.length() > 0) {
+            MFGT.gotoBuy(mContext, cartIds);
+        } else {
+            CommonUtils.showLongToast(R.string.order_nothing);
+        }
+
     }
-    private void sumPrice(){
+
+    private void sumPrice() {
+        cartIds="";
         int sumPrice = 0;
         int rankPrice = 0;
-        if(mlist!=null && mlist.size()>0){
-            for (CartBean c:mlist){
-                if(c.isChecked()){
-                    sumPrice += getPrice(c.getGoods().getCurrencyPrice())*c.getCount();
-                    rankPrice += getPrice(c.getGoods().getRankPrice())*c.getCount();
+        if (mlist != null && mlist.size() > 0) {
+            for (CartBean c : mlist) {
+                if (c.isChecked()) {
+                    cartIds += c.getId()+",";
+                    sumPrice += getPrice(c.getGoods().getCurrencyPrice()) * c.getCount();
+                    rankPrice += getPrice(c.getGoods().getRankPrice()) * c.getCount();
                 }
             }
-            mTvCartSumPrice.setText("合计:￥"+Double.valueOf(rankPrice));
-            mTvCartSavePrice.setText("节省:￥"+Double.valueOf(sumPrice-rankPrice));
-        }else{
+            mTvCartSumPrice.setText("合计:￥" + Double.valueOf(rankPrice));
+            mTvCartSavePrice.setText("节省:￥" + Double.valueOf(sumPrice - rankPrice));
+        } else {
+            cartIds = "";
             mTvCartSumPrice.setText("合计:￥0");
             mTvCartSavePrice.setText("节省:￥0");
         }
     }
-    private int getPrice(String price){
-        price = price.substring(price.indexOf("￥")+1);
-        return Integer.valueOf(price);
-    }
-    class updateCartReceiver extends BroadcastReceiver {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            L.e(TAG,"updateCartReceiver...");
-            sumPrice();
-            setCartLayout(mlist!=null&&mlist.size()>0);
-        }
+    private int getPrice(String price) {
+        price = price.substring(price.indexOf("￥") + 1);
+        return Integer.valueOf(price);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mReceiver!=null){
+        if (mReceiver != null) {
             mContext.unregisterReceiver(mReceiver);
         }
     }
@@ -203,6 +207,16 @@ public class CartFragment extends BaseFragment {
         super.onResume();
         L.e(TAG, "onResume......");
         initData();
+    }
+
+    class updateCartReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            L.e(TAG, "updateCartReceiver...");
+            sumPrice();
+            setCartLayout(mlist != null && mlist.size() > 0);
+        }
     }
 }
 
