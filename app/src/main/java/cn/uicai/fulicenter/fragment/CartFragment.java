@@ -60,8 +60,10 @@ public class CartFragment extends BaseFragment {
     MainActivity mContext;
     CartAdapter mAdapter;
     ArrayList<CartBean> mlist;
-
     updateCartReceiver mReceiver;
+
+    public CartFragment() {
+    }
 
     @Nullable
     @Override
@@ -111,8 +113,12 @@ public class CartFragment extends BaseFragment {
                     tvRfresh.setVisibility(View.GONE);
                     if (list != null && list.size() > 0) {
                         mlist.clear();
-                        mlist.addAll(list);
+                        mlist = list;
+                        L.e("ssssssssssss");
                         mAdapter.initData(mlist);
+                        setCartLayout(true);
+                    } else {
+                        setCartLayout(false);
                     }
                 }
 
@@ -166,7 +172,6 @@ public class CartFragment extends BaseFragment {
             mTvCartSumPrice.setText("合计:￥"+Double.valueOf(rankPrice));
             mTvCartSavePrice.setText("节省:￥"+Double.valueOf(sumPrice-rankPrice));
         }else{
-            setCartLayout(false);
             mTvCartSumPrice.setText("合计:￥0");
             mTvCartSavePrice.setText("节省:￥0");
         }

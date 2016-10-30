@@ -84,6 +84,7 @@ public class BoutioueFragment extends BaseFragment {
             public void onSuccess(BoutiqueBean[] result) {
                 srl.setRefreshing(false);//设置刷新为False  不在显示
                 tvRfresh.setVisibility(getView().GONE);//设置提示为不可见
+                L.e("resule"+result);
                 if (result != null && result.length > 0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
                     mAdapter.initData(list);

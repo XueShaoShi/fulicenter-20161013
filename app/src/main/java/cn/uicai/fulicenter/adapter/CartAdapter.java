@@ -26,6 +26,7 @@ import cn.uicai.fulicenter.bean.MessageBean;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.ImageLoader;
+import cn.uicai.fulicenter.utils.MFGT;
 
 
 /**
@@ -35,6 +36,7 @@ import cn.uicai.fulicenter.utils.ImageLoader;
 public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
     Context mContext;
     ArrayList<CartBean> mList;
+
 
     public CartAdapter(Context context, ArrayList<CartBean> list) {
         mContext = context;
@@ -88,7 +90,7 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
         TextView mTvCartGoodName;
         @BindView(R.id.iv_cart_add)
         ImageView mIvCartAdd;
-        @BindView(R.id.tv_cart_count)
+        @BindView(R.id.iv_cart_count)
         TextView mTvCartCount;
         @BindView(R.id.iv_cart_del)
         ImageView mIvCartDel;
@@ -100,6 +102,13 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
             ButterKnife.bind(this, view);
         }
 
+
+        @OnClick({R.id.iv_cart_thumb,R.id.tv_cart_good_name,R.id.tv_cart_price})
+        public void gotoDetail(){
+            final int position = (int) mIvCartAdd.getTag();
+            CartBean cart = mList.get(position);
+            MFGT.gotoGoodsDetailActivity(mContext,cart.getGoodsId());
+        }
 
         @OnClick(R.id.iv_cart_add)
         public void addCart() {
