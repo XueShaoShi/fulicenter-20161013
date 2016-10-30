@@ -198,6 +198,12 @@ public class CartFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        L.e(TAG, "onResume......");
+        initData();
+    }
 }
 
 

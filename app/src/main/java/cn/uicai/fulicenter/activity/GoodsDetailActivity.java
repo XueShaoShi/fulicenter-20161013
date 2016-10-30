@@ -21,6 +21,7 @@ import cn.uicai.fulicenter.bean.User;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
 import cn.uicai.fulicenter.utils.CommonUtils;
+import cn.uicai.fulicenter.utils.L;
 import cn.uicai.fulicenter.utils.MFGT;
 import cn.uicai.fulicenter.view.FlowIndicator;
 import cn.uicai.fulicenter.view.SlideAutoLoopView;
@@ -238,4 +239,30 @@ public class GoodsDetailActivity extends BaseActivity {
         // 启动分享GUI
         oks.show(this);
     }
+
+    @OnClick(R.id.iv_good_cart)
+    public void addCart(){
+        User user = FuLiCenterApplication.getUser();
+        if(user!=null){
+            NetDao.addCart(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if(result!=null && result.isSuccess()){
+                        CommonUtils.showLongToast(R.string.add_goods_success);
+                    }else {
+                        CommonUtils.showLongToast(R.string.add_goods_fail);
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    CommonUtils.showLongToast(R.string.add_goods_fail);
+                    L.e("error="+error);
+                }
+            });
+        }else{
+            MFGT.gotoLogin(mContext);
+        }
+    }
+
 }
