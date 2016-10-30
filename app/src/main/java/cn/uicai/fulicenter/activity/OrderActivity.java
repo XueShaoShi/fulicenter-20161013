@@ -26,9 +26,11 @@ import cn.uicai.fulicenter.FuLiCenterApplication;
 import cn.uicai.fulicenter.I;
 import cn.uicai.fulicenter.R;
 import cn.uicai.fulicenter.bean.CartBean;
+import cn.uicai.fulicenter.bean.MessageBean;
 import cn.uicai.fulicenter.bean.User;
 import cn.uicai.fulicenter.net.NetDao;
 import cn.uicai.fulicenter.net.OkHttpUtils;
+import cn.uicai.fulicenter.utils.CommonUtils;
 import cn.uicai.fulicenter.utils.L;
 import cn.uicai.fulicenter.utils.ResultUtils;
 import cn.uicai.fulicenter.view.DisplayUtils;
@@ -72,18 +74,18 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
 
     @Override
     protected void initView() {
-        DisplayUtils.initBackWithTitle(mContext,getString(R.string.confirm_order));
+        DisplayUtils.initBackWithTitle(mContext, getString(R.string.confirm_order));
     }
 
     @Override
     protected void initData() {
         cartIds = getIntent().getStringExtra(I.Cart.ID);
-         cartIds = getIntent().getStringExtra(I.Cart.ID);
+        cartIds = getIntent().getStringExtra(I.Cart.ID);
         user = FuLiCenterApplication.getUser();
-        L.e(TAG,"cartIds="+cartIds);
+        L.e(TAG, "cartIds=" + cartIds);
 
-        if(cartIds==null || cartIds.equals("")
-                || user==null){
+        if (cartIds == null || cartIds.equals("")
+                || user == null) {
             finish();
         }
         ids = cartIds.split(",");
@@ -95,9 +97,9 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
             @Override
             public void onSuccess(String s) {
                 ArrayList<CartBean> list = ResultUtils.getCartFromJson(s);
-                if(list==null || list.size()==0){
+                if (list == null || list.size() == 0) {
                     finish();
-                }else{
+                } else {
                     mList.addAll(list);
                     sumPrice();
                 }
@@ -109,25 +111,26 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
             }
         });
     }
+
     // 计算总金额（以分为单位）
     private void sumPrice() {
         rankPrice = 0;
-        if(mList!=null && mList.size()>0){
-            for (CartBean c:mList){
-                L.e(TAG,"c.id="+c.getId());
-                for (String id:ids) {
-                    L.e(TAG,"order.id="+id);
+        if (mList != null && mList.size() > 0) {
+            for (CartBean c : mList) {
+                L.e(TAG, "c.id=" + c.getId());
+                for (String id : ids) {
+                    L.e(TAG, "order.id=" + id);
                     if (id.equals(String.valueOf(c.getId()))) {
                         rankPrice += getPrice(c.getGoods().getRankPrice()) * c.getCount();
                     }
                 }
             }
         }
-        mTvOrderPrice.setText("合计:￥"+Double.valueOf(rankPrice));
+        mTvOrderPrice.setText("合计:￥" + Double.valueOf(rankPrice));
     }
 
-    private int getPrice(String price){
-        price = price.substring(price.indexOf("￥")+1);
+    private int getPrice(String price) {
+        price = price.substring(price.indexOf("￥") + 1);
         return Integer.valueOf(price);
     }
 
@@ -138,30 +141,30 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
 
     @OnClick(R.id.tv_order_buy)
     public void checkOrder() {
-        String receiveName=mEdOrderName.getText().toString();
-        if(TextUtils.isEmpty(receiveName)){
+        String receiveName = mEdOrderName.getText().toString();
+        if (TextUtils.isEmpty(receiveName)) {
             mEdOrderName.setError("收货人姓名不能为空");
             mEdOrderName.requestFocus();
             return;
         }
-        String mobile=mEdOrderPhone.getText().toString();
-        if(TextUtils.isEmpty(mobile)){
+        String mobile = mEdOrderPhone.getText().toString();
+        if (TextUtils.isEmpty(mobile)) {
             mEdOrderPhone.setError("手机号码不能为空");
             mEdOrderPhone.requestFocus();
             return;
         }
-        if(!mobile.matches("[\\d]{11}")){
+        if (!mobile.matches("[\\d]{11}")) {
             mEdOrderPhone.setError("手机号码格式错误");
             mEdOrderPhone.requestFocus();
             return;
         }
-        String area=mSpinOrderProvince.getSelectedItem().toString();
-        if(TextUtils.isEmpty(area)){
-            Toast.makeText(OrderActivity.this,"收货地区不能为空",Toast.LENGTH_SHORT).show();
+        String area = mSpinOrderProvince.getSelectedItem().toString();
+        if (TextUtils.isEmpty(area)) {
+            Toast.makeText(OrderActivity.this, "收货地区不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        String address=mEdOrderStreet.getText().toString();
-        if(TextUtils.isEmpty(address)){
+        String address = mEdOrderStreet.getText().toString();
+        if (TextUtils.isEmpty(address)) {
             mEdOrderStreet.setError("街道地址不能为空");
             mEdOrderStreet.requestFocus();
             return;
@@ -170,7 +173,7 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
     }
 
     private void gotoStatements() {
-        L.e(TAG,"rankPrice="+rankPrice);
+        L.e(TAG, "rankPrice=" + rankPrice);
         // 产生个订单号
         String orderNo = new SimpleDateFormat("yyyyMMddhhmmss")
                 .format(new Date());
@@ -189,7 +192,7 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
 
         try {
             bill.put("order_no", orderNo);
-            bill.put("amount", rankPrice*100);
+            bill.put("amount", rankPrice * 100);
             bill.put("extras", extras);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -202,7 +205,6 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
     @Override
     public void handlePaymentResult(Intent data) {
         if (data != null) {
-
             // result：支付结果信息
             // code：支付结果码
             //-2:用户自定义错误
@@ -210,8 +212,7 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
             // 0：取消
             // 1：成功
             // 2:应用内快捷支付支付结果
-
-            L.e(TAG,"code="+data.getExtras().getInt("code"));
+            L.e(TAG, "code=" + data.getExtras().getInt("code"));
             if (data.getExtras().getInt("code") != 2) {
                 PingppLog.d(data.getExtras().getString("result") + "  " + data.getExtras().getInt("code"));
             } else {
@@ -223,11 +224,41 @@ public class OrderActivity extends BaseActivity implements PaymentHandler {
                     } else if (resultJson.has("success")) {
                         result = resultJson.optJSONObject("success").toString();
                     }
-                    L.e(TAG,result);
+                    L.e(TAG, result);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+            int resultCode = data.getExtras().getInt("code");
+            switch (resultCode) {
+                case 1:
+                    paySuccess();
+                    CommonUtils.showLongToast(R.string.pingpp_title_activity_pay_sucessed);
+                    break;
+                case -1:
+                    CommonUtils.showLongToast(R.string.pingpp_pay_failed);
+                    finish();
+                    break;
+            }
         }
+
+    }
+
+    private void paySuccess() {
+        for (String id : ids) {
+            NetDao.deleteCart(mContext, Integer.valueOf(id), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    L.e(TAG, "result" + result);
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+        finish();
     }
 }
+
